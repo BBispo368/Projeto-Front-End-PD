@@ -1,0 +1,589 @@
+/* estilo geral e variaveis do tema */
+/* As variaveis globais definem cores, fundos e sombras para ambos os temas */
+:root {
+  color-scheme: light;
+  font-family: 'Cormorant Garamond', 'Inter', sans-serif;
+  background: #f4efe3;
+  color: #1b1b1b;
+  font-size: 16px;
+  line-height: 1.5;
+  --bg: #fdf9f2;
+  --surface: rgba(255, 255, 255, 0.96);
+  --surface-strong: #ffffff;
+  --text: #1b1b1b;
+  --text-muted: #736254;
+  --accent: #b98f2d;
+  --accent-soft: rgba(185, 143, 45, 0.12);
+  --border: rgba(185, 143, 45, 0.18);
+  --shadow: 0 28px 70px rgba(15, 23, 42, 0.08);
+  --panel: rgba(255, 250, 241, 0.92);
+  --panel-border: rgba(185, 143, 45, 0.16);
+}
+
+/* tema escuro com preto e dourado */
+/* Sobrescreve variaveis para modo escuro e ajusta esquema de cores */
+html[data-theme="dark"] {
+  color-scheme: dark;
+  background: #080808;
+  color: #f7ecd4;
+  --bg: #090909;
+  --surface: rgba(24, 24, 24, 0.95);
+  --surface-strong: #0f0f0f;
+  --text: #f7ecd4;
+  --text-muted: #c9b68e;
+  --accent: #d4af37;
+  --accent-soft: rgba(212, 175, 55, 0.14);
+  --border: rgba(212, 175, 55, 0.2);
+  --shadow: 0 28px 70px rgba(0, 0, 0, 0.45);
+  --panel: rgba(12, 12, 12, 0.92);
+  --panel-border: rgba(212, 175, 55, 0.18);
+}
+
+/* Define box-sizing global para facilitar calculo de margens e bordas */
+* {
+  box-sizing: border-box;
+}
+
+/* Estilo base do corpo da pagina, usando as variaveis do tema */
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #fff8e3 0%, #f3ebe0 38%, #e6dccf 100%);
+  color: var(--text);
+}
+
+/* Ajuste de fundo para modo escuro */
+html[data-theme="dark"] body {
+  background: radial-gradient(circle at top, #131313 0%, #090909 35%, #070707 100%);
+}
+
+/* Herda tipografia em campos e botoes para consistencia */
+button,
+input {
+  font: inherit;
+}
+
+/* Cursor de ponteiro para botoes */
+button {
+  cursor: pointer;
+}
+
+/* layout principal, centraliza o site e controla a largura */
+.page-shell {
+  width: min(80vw, 1400px);
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 32px 0 80px;
+}
+
+/* topbar com titulo e botoes de tema e carrinho */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding: 30px 34px;
+  border-radius: 30px;
+  background: linear-gradient(135deg, var(--panel), #fff8ed);
+  border: 1px solid var(--panel-border);
+  box-shadow: var(--shadow);
+  color: var(--text);
+}
+
+/* Ajuste visual da topbar no modo escuro */
+html[data-theme="dark"] .topbar {
+  background: linear-gradient(135deg, var(--panel), #171717);
+  border-color: var(--border);
+}
+
+/* Badge de marca no canto superior esquerdo */
+.brand-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  background: rgba(212, 175, 55, 0.14);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.85rem;
+  color: var(--text);
+}
+
+/* Titulo principal da pagina */
+.topbar h1 {
+  margin: 0.75rem 0 0.25rem;
+  font-size: clamp(1.7rem, 2.5vw, 2.6rem);
+}
+
+/* Descricao abaixo do titulo com texto secundario */
+.topbar p {
+  margin: 0;
+  max-width: 520px;
+  opacity: 0.82;
+  color: var(--text-muted);
+}
+
+/* area de busca e botoes de categoria */
+.topbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Barra de ferramentas contendo busca e filtros */
+.toolbar {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+/* Input de pesquisa principal */
+.search-input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(185, 143, 45, 0.18);
+  background: var(--surface);
+  color: var(--text);
+  outline: none;
+}
+
+/* Container horizontal dos filtros de categoria */
+.category-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* Botao de categoria padrao */
+.category-pill {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 10px 16px;
+  background: var(--surface);
+  color: var(--text);
+}
+
+/* Estado ativo do filtro de categoria */
+.category-pill--active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--text);
+}
+
+/* grade de produtos com 5 colunas em desktop e responsivo em telas menores */
+.product-grid {
+  display: grid;
+  gap: 22px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+/* Quatro colunas em telas medias */
+@media (max-width: 1350px) {
+  .product-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* Tres colunas em laptops menores */
+@media (max-width: 1100px) {
+  .product-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Duas colunas em tablets */
+@media (max-width: 820px) {
+  .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Coluna unica em celular */
+@media (max-width: 620px) {
+  .product-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Card individual do produto */
+.product-card {
+  background: var(--surface);
+  border-radius: 24px;
+  padding: 18px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Conteudo de imagem do card */
+.product-card__media {
+  border: 0;
+  background: transparent;
+  width: 100%;
+  padding: 0;
+}
+
+/* Imagem do produto dentro do card */
+.product-card__media img {
+  width: 100%;
+  height: 240px;
+  object-fit: contain;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+/* Corpo do card do produto */
+.product-card__body {
+  display: grid;
+  gap: 10px;
+}
+
+/* Botao/area clicavel com titulo do produto */
+.product-card__title {
+  border: 0;
+  background: transparent;
+  text-align: left;
+  font-weight: 700;
+  color: var(--text);
+  padding: 0;
+}
+
+/* Preco do produto em destaque */
+.product-card__price {
+  font-weight: 700;
+  color: var(--accent);
+}
+
+/* Estilo base para botoes com padding, borda e transicao */
+.button {
+  border: 1px solid transparent;
+  border-radius: 16px;
+  padding: 12px 18px;
+  font-weight: 700;
+  transition: transform 180ms ease, background-color 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+  min-height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+/* Pequena animacao ao passar o mouse sobre botoes */
+.button:hover {
+  transform: translateY(-1px);
+}
+
+/* Botao apenas com icone, sem texto adicional */
+.button--icon {
+  width: 46px;
+  min-width: 46px;
+  padding: 0;
+}
+
+/* Botao primario de acao com gradiente dourado */
+.button--primary {
+  background: linear-gradient(135deg, var(--accent), #f4d56d);
+  color: #111;
+  border-color: transparent;
+  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* Botao secundario leve, usado em filtros e controles */
+.button--secondary {
+  background: var(--accent-soft);
+  color: var(--text);
+  border-color: var(--border);
+}
+
+/* Botao ghost com fundo transparente */
+.button--ghost {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid rgba(212, 175, 55, 0.24);
+}
+
+/* badge de contador do carrinho */
+.badge {
+  display: inline-flex;
+  min-width: 28px;
+  height: 28px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgb(255, 255, 255);
+  color: var(--accent);
+  padding: 0 10px;
+  margin-left: 12px;
+  font-weight: 700;
+}
+
+/* carrinho lateral que abre e fecha sem perder o contexto da pagina */
+.cart-drawer {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: min(420px, 95vw);
+  height: 100vh;
+  background: var(--surface-strong);
+  box-shadow: -20px 0 60px rgba(15, 23, 42, 0.12);
+  transition: right 250ms ease;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+}
+
+html[data-theme="dark"] .cart-drawer {
+  background: rgba(18, 18, 18, 0.96);
+  box-shadow: -20px 0 70px rgba(0, 0, 0, 0.55);
+  border-left: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.cart-drawer--open {
+  right: 0;
+}
+
+.cart-header,
+.cart-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.cart-header {
+  margin-bottom: 24px;
+}
+
+.cart-body {
+  flex: 1;
+  overflow-y: auto;
+  display: grid;
+  gap: 16px;
+}
+
+.cart-item {
+  display: grid;
+  grid-template-columns: 76px 1fr auto;
+  gap: 12px;
+  align-items: center;
+}
+
+/* Imagem pequena do produto no carrinho */
+.cart-item img {
+  width: 76px;
+  height: 76px;
+  object-fit: contain;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.16);
+}
+
+/* Ajuste de fundo da imagem do carrinho no modo escuro */
+html[data-theme="dark"] .cart-item img {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Titulo do item no carrinho */
+.cart-item__info strong {
+  display: block;
+  font-size: 0.98rem;
+  color: var(--text);
+}
+
+/* Texto secundario do item do carrinho */
+.cart-item__info span {
+  display: block;
+  margin-top: 6px;
+  color: var(--text-muted);
+}
+
+/* Controles de quantidade do item */
+.cart-item__quantity {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+/* Botoes de mais/menos no carrinho */
+.cart-item__quantity button {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: rgba(212, 175, 55, 0.14);
+  color: var(--text);
+  border: 1px solid rgba(212, 175, 55, 0.22);
+}
+
+/* Botao de remover item do carrinho */
+.cart-item__remove {
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 1.4rem;
+}
+
+/* Linha de separacao superior no rodape do carrinho */
+.cart-footer {
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+/* Mensagens de alerta no topo ou dentro do layout */
+.alert {
+  padding: 18px 20px;
+  border-radius: 20px;
+  background: #fee2e2;
+  color: #991b1b;
+  margin-bottom: 18px;
+}
+
+/* Alerta no modo escuro */
+html[data-theme="dark"] .alert {
+  background: rgba(153, 74, 22, 0.16);
+  color: #f8e9c1;
+  border: 1px solid rgba(212, 175, 55, 0.24);
+}
+
+/* Estado vazio para listas sem conteudo */
+.empty-state,
+.cart-empty {
+  padding: 36px 20px;
+  border-radius: 20px;
+  text-align: center;
+  color: #475569;
+  background: white;
+}
+
+/* Ajuste de fundo e texto vazio no modo escuro */
+html[data-theme="dark"] .empty-state,
+html[data-theme="dark"] .cart-empty {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text);
+  border: 1px solid rgba(212, 175, 55, 0.14);
+}
+
+/* Tela de loading quando a API esta carregando */
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(15, 23, 42, 0.18);
+  color: var(--text);
+  font-weight: 700;
+  z-index: 30;
+}
+
+/* Loading overlay em modo escuro */
+html[data-theme="dark"] .loading-overlay {
+  background: rgba(0, 0, 0, 0.35);
+}
+
+/* Fundo de tela escura para modais */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(15, 23, 42, 0.55);
+  z-index: 40;
+}
+
+/* modal de detalhe do produto fica centralizado e responsivo */
+.modal-card {
+  width: min(880px, calc(100vw - 40px));
+  max-height: min(90vh, 820px);
+  overflow-y: auto;
+  border-radius: 30px;
+  background: var(--surface);
+  color: var(--text);
+  padding: 24px;
+  display: grid;
+  gap: 24px;
+}
+
+/* Fundo do modal no modo escuro */
+html[data-theme="dark"] .modal-card {
+  background: rgba(18, 18, 18, 0.96);
+  border: 1px solid rgba(212, 175, 55, 0.15);
+}
+
+/* Botao de fechar o modal */
+.modal-close {
+  justify-self: end;
+  border: 0;
+  background: transparent;
+  font-size: 1.5rem;
+  color: var(--text);
+}
+
+/* Imagem do produto exibida no modal */
+.modal-card img {
+  width: 100%;
+  max-height: 380px;
+  object-fit: contain;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+/* Imagem do modal no modo escuro */
+html[data-theme="dark"] .modal-card img {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Conteudo textual do modal */
+.modal-content {
+  display: grid;
+  gap: 16px;
+}
+
+/* Titulo do modal de produto */
+.modal-content h2 {
+  margin: 0;
+}
+
+/* Descricao do modal com texto secundario */
+.modal-content p {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+/* Rodape do modal com preco e acoes */
+.modal-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+}
+
+/* Preco em destaque no modal */
+.modal-price {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #e9d203;
+}
+
+/* Ajustes de responsividade para telas pequenas */
+@media (max-width: 760px) {
+  .topbar,
+  .panel,
+  .cart-drawer {
+    padding: 18px;
+  }
+  .topbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .cart-drawer {
+    width: 100%;
+  }
+  .product-card__media img {
+    height: 220px;
+  }
+}
