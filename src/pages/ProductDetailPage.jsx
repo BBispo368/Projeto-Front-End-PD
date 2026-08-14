@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { fetchJson } from '../services/api';
-import LoadingOverlay from '../components/LoadingOverlay';
-import Alert from '../components/Alert';
-import { useCatalog } from '../hooks/useCatalog'; // Para usar formatPrice e addToCart
+import { fetchJson } from '../services/api.js';
+import LoadingOverlay from '../components/LoadingOverlay.jsx';
+import Alert from '../components/Alert.jsx';
+import { useCatalog } from '../hooks/useCatalog.js'; // Para usar formatPrice e addToCart
 
 function ProductDetailPage() {
     const { id } = useParams();

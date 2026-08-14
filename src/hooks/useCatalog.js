@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { fetchJson } from '../services/api';
+import { fetchJson } from '../services/api.js';
 
 export function useCatalog() {
     const [products, setProducts] = useState([]);

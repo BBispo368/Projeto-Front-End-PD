@@ -1,30 +1,40 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { useCatalog } from './hooks/useCatalog';
-import Header from './components/Header';
-import SearchBar from './components/SearchBar';
-import CategoryFilter from './components/CategoryFilter';
-import ProductList from './components/ProductList';
-import CartDrawer from './components/CartDrawer';
-import LoadingOverlay from './components/LoadingOverlay';
-import Alert from './components/Alert';
-import ProductDetailPage from './pages/ProductDetailPage'; // Importa a nova página
+import { Routes, Route, useNavigate } from 'react-router-dom';
+import { useCatalog } from './hooks/useCatalog.js';
+import Header from './components/Header.jsx';
+import SearchBar from './components/SearchBar.jsx';
+import CategoryFilter from './components/CategoryFilter.jsx';
+import ProductList from './components/ProductList.jsx';
+import CartDrawer from './components/CartDrawer.jsx';
+import LoadingOverlay from './components/LoadingOverlay.jsx';
+import Alert from './components/Alert.jsx';
+import ProductDetailPage from './pages/ProductDetailPage.jsx'; // Importa a nova página
 
 function App() {
     const { state, toggleTheme, toggleCart, handleSearch, handleCategory, addToCart, removeFromCart, changeQuantity, formatPrice } = useCatalog();
+    const navigate = useNavigate();
+
+    const handleShowDetails = (productId) => navigate(`/product/${productId}`);
+
+    const visibleProducts = state.products.filter((product) => {
+        const matchesCategory = state.filteredCategory === 'all' || product.category === state.filteredCategory;
+        const matchesSearch = product.title.toLowerCase().includes(state.searchTerm.toLowerCase().trim());
+        return matchesCategory && matchesSearch;
+    });
 
     return (
-        <BrowserRouter>
-            <div className={`page-shell ${state.cartOpen ? 'page-shell--cart-open' : ''}`}>
-                <Header
-                    theme={state.theme}
-                    cartCount={state.cart.reduce((sum, item) => sum + item.quantity, 0)}
-                    onToggleTheme={toggleTheme}
-                    onToggleCart={toggleCart}
-                />
+        <div className={`page-shell ${state.cartOpen ? 'page-shell--cart-open' : ''}`}>
+            <Header
+                theme={state.theme}
+                cartCount={state.cart.reduce((sum, item) => sum + item.quantity, 0)}
+                onToggleTheme={toggleTheme}
+                onToggleCart={toggleCart}
+            />
 
-                <Routes>
-                    <Route path="/" element={
+            <Routes>
+                <Route
+                    path="/"
+                    element={
                         <>
                             <section className="panel panel--hero">
                                 <div>
@@ -45,19 +55,20 @@ function App() {
                             {state.error && <Alert message={state.error} />}
 
                             <ProductList
-                                products={state.products}
+                                products={visibleProducts}
                                 onAddToCart={addToCart}
                                 formatPrice={formatPrice}
+                                onShowDetails={handleShowDetails}
                             />
                         </>
-                    } />
-                    <Route path="/product/:id" element={<ProductDetailPage />} />
-                </Routes>
+                    }
+                />
+                <Route path="/product/:id" element={<ProductDetailPage />} />
+            </Routes>
 
-                <CartDrawer cart={state.cart} cartOpen={state.cartOpen} onToggleCart={toggleCart} onRemoveFromCart={removeFromCart} onChangeQuantity={changeQuantity} formatPrice={formatPrice} />
-                {state.loading && <LoadingOverlay />}
-            </div>
-        </BrowserRouter>
+            <CartDrawer cart={state.cart} cartOpen={state.cartOpen} onToggleCart={toggleCart} onRemoveFromCart={removeFromCart} onChangeQuantity={changeQuantity} formatPrice={formatPrice} />
+            {state.loading && <LoadingOverlay />}
+        </div>
     );
 }
 
