@@ -13,6 +13,13 @@ export function useCatalog() {
             return [];
         }
     });
+    const [orders, setOrders] = useState(() => {
+        try {
+            return JSON.parse(localStorage.getItem('catalog-orders')) || [];
+        } catch {
+            return [];
+        }
+    });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [selectedProduct, setSelectedProduct] = useState(null);
@@ -34,6 +41,11 @@ export function useCatalog() {
     useEffect(() => {
         localStorage.setItem('catalog-cart', JSON.stringify(cart));
     }, [cart]);
+
+    // Save orders to localStorage whenever it changes
+    useEffect(() => {
+        localStorage.setItem('catalog-orders', JSON.stringify(orders));
+    }, [orders]);
 
     // Initial data fetch
     useEffect(() => {
@@ -113,6 +125,19 @@ export function useCatalog() {
         });
     };
 
+    const placeOrder = (orderDetails) => {
+        const newOrder = {
+            id: Date.now().toString(),
+            date: new Date().toISOString(),
+            items: [...cart],
+            total: cartTotal(),
+            ...orderDetails,
+        };
+        setOrders((prev) => [newOrder, ...prev]);
+        setCart([]);
+        setCartOpen(false);
+    };
+
     const toggleCart = () => setCartOpen((prev) => !prev);
 
     const openProductDetails = (productId) => {
@@ -134,6 +159,7 @@ export function useCatalog() {
             filteredCategory,
             searchTerm,
             cart,
+            orders,
             loading,
             error,
             selectedProduct,
@@ -147,6 +173,7 @@ export function useCatalog() {
         addToCart,
         removeFromCart,
         changeQuantity,
+        placeOrder,
         openProductDetails,
         closeProductDetails,
         formatPrice,

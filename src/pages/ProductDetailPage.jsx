@@ -3,15 +3,13 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { fetchJson } from '../services/api.js';
 import LoadingOverlay from '../components/LoadingOverlay.jsx';
 import Alert from '../components/Alert.jsx';
-import { useCatalog } from '../hooks/useCatalog.js'; // Para usar formatPrice e addToCart
 
-function ProductDetailPage() {
+function ProductDetailPage({ addToCart, formatPrice }) {
     const { id } = useParams();
     const navigate = useNavigate();
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
-    const { formatPrice, addToCart } = useCatalog(); // Reutiliza funções do hook principal
 
     useEffect(() => {
         async function getProductDetails() {

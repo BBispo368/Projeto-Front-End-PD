@@ -1,7 +1,14 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function CartDrawer({ cart, cartOpen, onToggleCart, onRemoveFromCart, onChangeQuantity, formatPrice }) {
+    const navigate = useNavigate();
     const cartTotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+    const handleCheckout = () => {
+        onToggleCart();
+        navigate('/checkout');
+    };
 
     return (
         <aside className={`cart-drawer ${cartOpen ? 'cart-drawer--open' : ''}`}>
@@ -25,8 +32,26 @@ function CartDrawer({ cart, cartOpen, onToggleCart, onRemoveFromCart, onChangeQu
                                     <button type="button" onClick={() => onChangeQuantity(item.id, -1)}>
                                         -
                                     </button>
-                                    <span>{item.quantity}</span>
-                                    <button type="button" onClick={() => onChangeQuantity(item.id, 1)}>
+                                    <input
+                                        type="number"
+                                        className="cart-item__input"
+                                        min="1"
+                                        max="999"
+                                        value={item.quantity}
+                                        onChange={(e) => {
+                                            let val = parseInt(e.target.value, 10);
+                                            if (!isNaN(val) && val > 0) {
+                                                if (val > 999) val = 999;
+                                                onChangeQuantity(item.id, val - item.quantity);
+                                            }
+                                        }}
+                                        onKeyDown={(e) => {
+                                            if (['-', '+', 'e', 'E', '.', ','].includes(e.key)) {
+                                                e.preventDefault();
+                                            }
+                                        }}
+                                    />
+                                    <button type="button" onClick={() => item.quantity < 999 && onChangeQuantity(item.id, 1)}>
                                         +
                                     </button>
                                 </div>
@@ -43,7 +68,7 @@ function CartDrawer({ cart, cartOpen, onToggleCart, onRemoveFromCart, onChangeQu
                     <span>Total</span>
                     <strong>{formatPrice(cartTotal)}</strong>
                 </div>
-                <button type="button" className="button button--primary" disabled={cart.length === 0}>
+                <button type="button" className="button button--primary" disabled={cart.length === 0} onClick={handleCheckout}>
                     Comprar
                 </button>
             </div>
